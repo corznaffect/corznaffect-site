@@ -7,7 +7,7 @@ const BG = '#FAFAF7';
 const LINE = '#E8E2D0';
 
 // ⚠️ Live Formspree endpoint — submissions go to Cor's Gmail
-const FORMSPREE_URL = 'https://formspree.io/f/mvzdywzd';
+const FORMSPREE_URL = 'https://formspree.io/f/mdavrnvl';
 
 const Logo = ({ size = 200 }) => {
   // Plain gold CORZNAFFECT wordmark, no box/frame, no monogram.
