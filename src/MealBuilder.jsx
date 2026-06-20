@@ -309,7 +309,7 @@ export default function MealBuilder() {
     </div>
   );
 
-  if (reviewing) return <Review meal={scaled.find(m => m.id === reviewing)} existing={reviews[reviewing] || {}} onSubmit={d => subRev(reviewing, d)} onCancel={() => setReviewing(null)} />;
+  if (reviewing) return <Review meal={scaled.find(m => m.id === reviewing)} existing={reviews[reviewing] || {}} onSubmit={d => subRev(reviewing, d)} onCancel={() => setReviewing(null)} clientCode={code} />;
 
   if (view === 'finalised') return (
     <div style={page}>
@@ -554,13 +554,61 @@ export default function MealBuilder() {
   );
 }
 
-function Review({ meal, existing, onSubmit, onCancel }) {
+function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
   const [r, setR] = useState(existing.rating || 0);
   const [sR, setSR] = useState(existing.setupRating || 0);
   const [tR, setTR] = useState(existing.timeRating || 0);
   const [c, setC] = useState(existing.comment || '');
   const [ph, setPh] = useState(existing.photo || null);
-  const handle = e => { const f = e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = ev => setPh(ev.target.result); rd.readAsDataURL(f); };
+  const [phFile, setPhFile] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [sendErr, setSendErr] = useState(false);
+
+  const handle = e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setPhFile(f);
+    const rd = new FileReader();
+    rd.onload = ev => setPh(ev.target.result);
+    rd.readAsDataURL(f);
+  };
+
+  const handleSubmit = async () => {
+    if (r === 0) return;
+    setSending(true);
+    setSendErr(false);
+    try {
+      const fd = new FormData();
+      fd.append('_subject', `New CNA Meal Review — ${meal.name}`);
+      fd.append('meal', meal.name);
+      fd.append('clientCode', clientCode || 'Unknown');
+      fd.append('overallRating', `${r} / 5 stars`);
+      fd.append('setupRating', `${sR} / 5 stars`);
+      fd.append('timeRating', `${tR} / 5 stars`);
+      fd.append('review', c || '(no comment left)');
+      fd.append('submittedAt', new Date().toLocaleString('en-AU'));
+      if (phFile) fd.append('photo', phFile);
+
+      const res = await fetch('https://formspree.io/f/mdavrnvl', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: fd,
+      });
+
+      if (res.ok) {
+        setSent(true);
+        onSubmit({ rating: r, setupRating: sR, timeRating: tR, comment: c, photo: ph });
+      } else {
+        setSendErr(true);
+      }
+    } catch (e) {
+      setSendErr(true);
+    } finally {
+      setSending(false);
+    }
+  };
+
   const G2 = '#C9A961', K2 = '#0A0A0A', BG2 = '#FAFAF7', LINE2 = '#E8E2D0';
   const BF2 = { fontFamily: '"DM Sans", sans-serif' };
   const Stars = ({ v, on, l }) => (
@@ -571,6 +619,7 @@ function Review({ meal, existing, onSubmit, onCancel }) {
       </div>
     </div>
   );
+
   return (
     <div style={{ minHeight: '100vh', background: BG2, fontFamily: '"Fraunces", Georgia, serif', padding: '40px 20px' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap'); * { box-sizing: border-box; } body { margin: 0; } input:focus,textarea:focus { outline: none; } button { transition: all 0.2s ease; cursor: pointer; }`}</style>
@@ -594,7 +643,7 @@ function Review({ meal, existing, onSubmit, onCancel }) {
             {ph ? (
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <img src={ph} alt="Your dish" style={{ width: 160, height: 160, objectFit: 'cover', border: '1px solid #D4CFBF' }} />
-                <button onClick={() => setPh(null)} style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(10,10,10,0.7)', color: G2, border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={12} /></button>
+                <button onClick={() => { setPh(null); setPhFile(null); }} style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(10,10,10,0.7)', color: G2, border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={12} /></button>
               </div>
             ) : (
               <label style={{ ...BF2, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 20px', fontSize: 12, fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', background: BG2, color: K2, border: `1px dashed ${G2}`, cursor: 'pointer' }}>
@@ -603,9 +652,10 @@ function Review({ meal, existing, onSubmit, onCancel }) {
               </label>
             )}
           </div>
+          {sendErr && <div style={{ ...BF2, fontSize: 12, color: '#A03020', padding: '10px 14px', background: '#FBE9E5', border: '1px solid #A03020', marginBottom: 16 }}>Something went wrong sending your review. Please try again.</div>}
           <div style={{ display: 'flex', gap: 12 }}>
             <button onClick={onCancel} style={{ ...BF2, flex: 1, padding: 14, fontSize: 12, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', background: 'transparent', color: K2, border: `1px solid ${K2}`, cursor: 'pointer' }}>Cancel</button>
-            <button onClick={() => onSubmit({ rating: r, setupRating: sR, timeRating: tR, comment: c, photo: ph })} disabled={r === 0} style={{ ...BF2, flex: 2, padding: 14, fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', background: r === 0 ? '#C0C0C0' : G2, color: K2, border: 'none', cursor: r === 0 ? 'not-allowed' : 'pointer' }}>Submit Review</button>
+            <button onClick={handleSubmit} disabled={r === 0 || sending} style={{ ...BF2, flex: 2, padding: 14, fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', background: (r === 0 || sending) ? '#C0C0C0' : G2, color: K2, border: 'none', cursor: (r === 0 || sending) ? 'not-allowed' : 'pointer' }}>{sending ? 'Sending...' : 'Submit Review'}</button>
           </div>
           <p style={{ ...BF2, fontSize: 11, color: '#7A7A7A', marginTop: 14, textAlign: 'center', lineHeight: 1.6 }}>By submitting, you agree your review may be shared as a testimonial.</p>
         </div>
