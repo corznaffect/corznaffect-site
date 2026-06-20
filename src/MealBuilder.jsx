@@ -560,17 +560,27 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
   const [tR, setTR] = useState(existing.timeRating || 0);
   const [c, setC] = useState(existing.comment || '');
   const [ph, setPh] = useState(existing.photo || null);
-  const [phFile, setPhFile] = useState(null);
   const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
   const [sendErr, setSendErr] = useState(false);
 
   const handle = e => {
     const f = e.target.files[0];
     if (!f) return;
-    setPhFile(f);
+    // Resize large images before storing to keep payload under Formspree limits
     const rd = new FileReader();
-    rd.onload = ev => setPh(ev.target.result);
+    rd.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 800;
+        const ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * ratio);
+        canvas.height = Math.round(img.height * ratio);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        setPh(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = ev.target.result;
+    };
     rd.readAsDataURL(f);
   };
 
@@ -579,25 +589,25 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
     setSending(true);
     setSendErr(false);
     try {
-      const fd = new FormData();
-      fd.append('_subject', `New CNA Meal Review — ${meal.name}`);
-      fd.append('meal', meal.name);
-      fd.append('clientCode', clientCode || 'Unknown');
-      fd.append('overallRating', `${r} / 5 stars`);
-      fd.append('setupRating', `${sR} / 5 stars`);
-      fd.append('timeRating', `${tR} / 5 stars`);
-      fd.append('review', c || '(no comment left)');
-      fd.append('submittedAt', new Date().toLocaleString('en-AU'));
-      if (phFile) fd.append('photo', phFile);
+      const payload = {
+        _subject: `New CNA Meal Review — ${meal.name}`,
+        meal: meal.name,
+        clientCode: clientCode || 'Unknown',
+        overallRating: `${r} / 5 stars`,
+        setupRating: `${sR} / 5 stars`,
+        timeRating: `${tR} / 5 stars`,
+        review: c || '(no comment left)',
+        submittedAt: new Date().toLocaleString('en-AU'),
+        ...(ph ? { photo_base64: ph } : { photo: 'No photo submitted' }),
+      };
 
       const res = await fetch('https://formspree.io/f/mdavrnvl', {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: fd,
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        setSent(true);
         onSubmit({ rating: r, setupRating: sR, timeRating: tR, comment: c, photo: ph });
       } else {
         setSendErr(true);
@@ -643,7 +653,7 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
             {ph ? (
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <img src={ph} alt="Your dish" style={{ width: 160, height: 160, objectFit: 'cover', border: '1px solid #D4CFBF' }} />
-                <button onClick={() => { setPh(null); setPhFile(null); }} style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(10,10,10,0.7)', color: G2, border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={12} /></button>
+                <button onClick={() => { setPh(null); }} style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(10,10,10,0.7)', color: G2, border: 'none', borderRadius: '50%', width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={12} /></button>
               </div>
             ) : (
               <label style={{ ...BF2, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 20px', fontSize: 12, fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', background: BG2, color: K2, border: `1px dashed ${G2}`, cursor: 'pointer' }}>
