@@ -591,6 +591,7 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
     try {
       const payload = {
         _subject: `New CNA Meal Review — ${meal.name}`,
+        email: 'review@corznaffect.com',
         meal: meal.name,
         clientCode: clientCode || 'Unknown',
         overallRating: `${r} / 5 stars`,
@@ -598,7 +599,6 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
         timeRating: `${tR} / 5 stars`,
         review: c || '(no comment left)',
         submittedAt: new Date().toLocaleString('en-AU'),
-        ...(ph ? { photo_base64: ph } : { photo: 'No photo submitted' }),
       };
 
       const res = await fetch('https://formspree.io/f/mdavrnvl', {
@@ -610,6 +610,8 @@ function Review({ meal, existing, onSubmit, onCancel, clientCode }) {
       if (res.ok) {
         onSubmit({ rating: r, setupRating: sR, timeRating: tR, comment: c, photo: ph });
       } else {
+        const errData = await res.json().catch(() => ({}));
+        console.error('Formspree error:', res.status, errData);
         setSendErr(true);
       }
     } catch (e) {
