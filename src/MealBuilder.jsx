@@ -1,4 +1,4 @@
-=import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Coffee, Sandwich, UtensilsCrossed, Apple, GlassWater, Plus, Minus, X, ShoppingCart, FileText, Check, ChefHat, Filter, Star, Camera, ArrowLeft, Trophy, TrendingDown, Equal, HelpCircle, Clock } from 'lucide-react';
 
 const PHASES = {
