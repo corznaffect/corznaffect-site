@@ -9,55 +9,55 @@ const PHASES = {
 };
 
 const IMG = {
-  oats: 'https://images.unsplash.com/photo-1495214783159-3503fd1b572d?w=600&q=80',   // protein oats with berries & banana — updated
+  oats: 'https://images.unsplash.com/photo-1563213349-0775a114f170?w=600&q=80',
   yog: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80',
-  eggs: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=600&q=80',   // scrambled eggs on sourdough — updated
-  toast: 'https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=600&q=80',   // vegemite & avocado toast — updated
+  eggs: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=600&q=80',
+  toast: 'https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=600&q=80',
   smooth: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=600&q=80',
   pancake: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80',
-  burrito: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&q=80', // breakfast burrito cut open — updated
+  burrito: 'https://images.unsplash.com/photo-1711488735428-27c6757beb5c?w=600&q=80',
   acai: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600&q=80',
-  granola: 'https://images.unsplash.com/photo-1550411294-2f6d8cb2e0d4?w=600&q=80',   // granola yoghurt honey jar — updated
+  granola: 'https://images.unsplash.com/photo-1568086256437-e745ec321426?w=600&q=80',
   shaksh: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=600&q=80',
   chicrice: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80',
-  tuna: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80',
+  tuna: 'https://images.unsplash.com/photo-1676300186691-39edceddd705?w=600&q=80',
   beef: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=600&q=80',
   hallo: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80',
-  caesar: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=600&q=80',
-  poke: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?w=600&q=80',
-  steaksal: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=600&q=80',
+  caesar: 'https://images.unsplash.com/photo-1666819615040-eff5e52c778a?w=600&q=80',
+  poke: 'https://images.unsplash.com/photo-1633862472152-e3873eb1b3ff?w=600&q=80',
+  steaksal: 'https://images.unsplash.com/photo-1605851086486-2bfb45e926d9?w=600&q=80',
   burger: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80',
   pasta: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&q=80',
   buddha: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
-  salmon: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80',
+  salmon: 'https://images.unsplash.com/photo-1678269367737-eb7f31f720f8?w=600&q=80',
   spag: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&q=80',
   stirfry: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&q=80',
   lamb: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
-  curry: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',  // chickpea curry with rice — updated
-  steak: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80',
+  curry: 'https://images.unsplash.com/photo-1582576163090-09d3b6f8a969?w=600&q=80',
+  steak: 'https://images.unsplash.com/photo-1676300185292-e23bb3db50fa?w=600&q=80',
   chicparm: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=600&q=80',
   fishtaco: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80',
   pizza: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80',
   meatball: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&q=80',
-  protbar: 'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=600&q=80', // protein bar & apple — updated
+  protbar: 'https://images.unsplash.com/photo-1622484212385-1d4d2bba98f3?w=600&q=80',
   cottage: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80',
   beggs: 'https://images.unsplash.com/photo-1607690424560-ad06f4ce5be5?w=600&q=80',
-  yogh: 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=600&q=80',
-  trail: 'https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=600&q=80',  // trail mix nuts seeds chocolate — updated
+  yogh: 'https://images.unsplash.com/photo-1696540246756-a31640c30e61?w=600&q=80',
+  trail: 'https://images.unsplash.com/photo-1599599810694-57a2ca8276a8?w=600&q=80',
   hummus: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=600&q=80',
-  ricecake: 'https://images.unsplash.com/photo-1568901839119-631418a3910d?w=600&q=80', // rice cakes with almond butter & banana — updated
-  banpb: 'https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?w=600&q=80',      // banana with peanut butter — updated
+  ricecake: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=600&q=80',
+  banpb: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=600&q=80',
   jerky: 'https://images.unsplash.com/photo-1598679253544-2c97992403ea?w=600&q=80',
   edam: 'https://images.unsplash.com/photo-1542736667-069246bdbc6d?w=600&q=80',
   coffee: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80',
-  massg: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600&q=80',      // mass gainer smoothie — updated
+  massg: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600&q=80',
   green: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=600&q=80',
-  casein: 'https://images.unsplash.com/photo-1511688878353-3a2f5be94cd7?w=600&q=80',  // chocolate casein shake — updated
+  casein: 'https://images.unsplash.com/photo-1511688878353-3a2f5be94cd7?w=600&q=80',
   soda: 'https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=600&q=80',
   matcha: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&q=80',
   hotchoc: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&q=80',
   electro: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80',
-  cocon: 'https://images.unsplash.com/photo-1490323936748-95c3f4d15add?w=600&q=80',   // coconut recovery shake — updated
+  cocon: 'https://images.unsplash.com/photo-1473115209096-e0375dd6b3b3?w=600&q=80',
   kombu: 'https://images.unsplash.com/photo-1633933037018-ae42f9bd0b3f?w=600&q=80',
 };
 
