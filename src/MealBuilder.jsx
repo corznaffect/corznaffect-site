@@ -55,7 +55,7 @@ const IMG = {
   casein: 'https://images.pexels.com/photos/17255665/pexels-photo-17255665.jpeg?w=600&q=80',
   soda: 'https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=600&q=80',
   matcha: 'https://images.pexels.com/photos/32529470/pexels-photo-32529470.jpeg?w=600&q=80',
-  hotchoc: 'https://images.pexels.com/photos/10420416/pexels-photo-10420416.jpeg?w=600&q=80',
+  hotchoc: 'https://images.unsplash.com/photo-1702165639524-252a1c1b1ab5?w=600&q=80',
   electro: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80',
   cocon: 'https://images.unsplash.com/photo-1473115209096-e0375dd6b3b3?w=600&q=80',
 
